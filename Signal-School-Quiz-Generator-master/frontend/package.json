@@ -1,0 +1,63 @@
+{
+  "name": "signal-school-quiz-generator",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@rollup/plugin-terser": "^0.4.4",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.11.0",
+    "bootstrap": "^5.3.3",
+    "dompurify": "^3.2.6",
+    "glob": "^11.0.3",
+    "jspdf": "^3.0.1",
+    "lodash": "^4.17.21",
+    "react": "^19.0.0",
+    "react-bootstrap": "^2.10.9",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "react-markdown": "^9.0.1",
+    "react-router-dom": "^6.30.0",
+    "react-scripts": "^5.0.1",
+    "react-syntax-highlighter": "^15.5.0",
+    "rimraf": "^6.0.1",
+    "web-vitals": "^2.1.4",
+    "workbox-cli": "^7.3.0",
+    "workbox-webpack-plugin": "^7.3.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "source-map-explorer": "^2.5.3"
+  }
+}
