@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Base API URL from environment variable or default to localhost
-export const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
+export const API_URL = process.env.REACT_APP_API_URL || 'https://quiz-lheo.onrender.com';
 
 // Create main axios instance
 const api = axios.create({
