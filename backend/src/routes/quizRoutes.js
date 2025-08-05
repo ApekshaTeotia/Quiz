@@ -9,14 +9,13 @@ import xss from 'xss-clean';
 import hpp from 'hpp';
 import { generalLimiter, aiGenerationLimiter } from '../middlewares/rateLimiter.js';
 import { commonRules } from '../utils/validator.js';
-import { validate } from '../middlewares/validation.js';
+import validation from '../middlewares/validation.js';
 import ExportController from '../controllers/exportController.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = express.Router();
 
-// Apply security middlewares
 router.use(xss()); // Sanitize input
 router.use(hpp()); // Prevent HTTP Parameter Pollution
 
@@ -87,7 +86,7 @@ router.post(
     '/generate',
     aiGenerationLimiter,
     commonRules.quizRules.generate,
-    validate,
+    validation.validate,
     QuizController.generateQuiz
 );
 
@@ -110,7 +109,7 @@ router.post(
 router.post(
     '/save',
     commonRules.quizRules.create,
-    validate,
+    validation.validate,
     QuizController.saveQuiz
 );
 
@@ -121,7 +120,7 @@ router.get('/', QuizController.getAllQuizzes);
 router.get(
     '/:id',
     commonRules.quizRules.getById,
-    validate,
+    validation.validate,
     QuizController.getQuizById
 );
 
@@ -129,7 +128,7 @@ router.get(
 router.delete(
     '/:id',
     commonRules.quizRules.delete,
-    validate,
+    validation.validate,
     QuizController.deleteQuiz
 );
 
@@ -137,7 +136,7 @@ router.delete(
 router.patch(
     '/:id/rename',
     commonRules.quizRules.rename,
-    validate,
+    validation.validate,
     QuizController.renameQuiz
 );
 
@@ -145,7 +144,7 @@ router.patch(
 router.get(
     '/:id/export/moodle',
     commonRules.quizRules.getById,
-    validate,
+    validation.validate,
     ExportController.exportQuizToGift
 );
 
@@ -153,7 +152,7 @@ router.get(
 router.get(
     '/:id/export/text',
     commonRules.quizRules.getById,
-    validate,
+    validation.validate,
     ExportController.exportQuizToPlainText
 );
 
@@ -161,7 +160,7 @@ router.get(
 router.patch(
     '/:id/questions',
     commonRules.quizRules.updateQuestions,
-    validate,
+    validation.validate,
     QuizController.updateQuizQuestions
 );
 
@@ -169,7 +168,7 @@ router.patch(
 router.patch(
     '/:id/move',
     commonRules.quizRules.move,
-    validate,
+    validation.validate,
     QuizController.moveQuiz
 );
 
