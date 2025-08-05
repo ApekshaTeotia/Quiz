@@ -5,13 +5,20 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import xss from 'xss-clean';
+import hpp from 'hpp';
+import { generalLimiter, aiGenerationLimiter } from '../middlewares/rateLimiter.js';
+import { commonRules } from '../utils/validator.js';
+import { validate } from '../middlewares/validation.js';
+import ExportController from '../controllers/exportController.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const router = express.Router();
 
-// Apply sanitization middleware to all routes
-router.use(sanitizeAll);
+// Apply security middlewares
+router.use(xss()); // Sanitize input
+router.use(hpp()); // Prevent HTTP Parameter Pollution
 
 // Apply general rate limiter to all quiz routes
 router.use(generalLimiter);
