@@ -34,7 +34,7 @@ class Database {
         connectionLimit: dbConfig.connectionLimit
       });
 
-      // Create connection pool
+      // Create connection pool with enhanced timeout settings
       this.pool = mysql.createPool({
         host: dbConfig.host,
         user: dbConfig.user,
@@ -48,7 +48,16 @@ class Database {
         timezone: '+00:00', // UTC
         multipleStatements: true, // Allow multiple SQL statements
         charset: 'utf8mb4', // Support full UTF-8
-        namedPlaceholders: true // Enable named placeholders
+        namedPlaceholders: true, // Enable named placeholders
+        connectTimeout: 60000, // Increase connection timeout to 60 seconds
+        acquireTimeout: 60000, // Increase acquire timeout to 60 seconds
+        timeout: 60000, // Increase query timeout to 60 seconds
+        socketPath: process.platform === 'win32' ? null : '/var/run/mysqld/mysqld.sock', // Add socket path for non-Windows
+        ssl: process.env.DB_SSL === 'true' ? {
+          rejectUnauthorized: false // Allow self-signed certificates
+        } : undefined,
+        debug: process.env.NODE_ENV === 'development', // Enable debug in development
+        trace: process.env.NODE_ENV === 'development' // Enable trace in development
       });
 
       logger.info('Database connection pool initialized');
