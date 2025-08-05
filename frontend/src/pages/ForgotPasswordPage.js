@@ -53,8 +53,8 @@ const ForgotPasswordPage = () => {
               height="60"
               className="mb-3"
             />
-            <h2>ลืมรหัสผ่าน</h2>
-            <p className="text-muted">กรอกอีเมลของคุณเพื่อรับลิงก์สำหรับรีเซ็ตรหัสผ่าน</p>
+            <h2>Forgot Password</h2>
+            <p className="text-muted">Enter your email to receive a password reset link</p>
           </div>
           
           <Card className="border-0 shadow-sm">
@@ -62,7 +62,7 @@ const ForgotPasswordPage = () => {
               {/* Success message */}
               {submitSuccess && (
                 <Alert variant="success" onClose={() => setSubmitSuccess(false)} dismissible>
-                  <Alert.Heading>คำขอรีเซ็ตรหัสผ่านสำเร็จ!</Alert.Heading>
+                  <Alert.Heading>Password Reset Request Successful!</Alert.Heading>
                   <p>
                     หากอีเมลของคุณมีอยู่ในระบบของเรา เราได้ส่งลิงก์สำหรับรีเซ็ตรหัสผ่านไปยังอีเมลดังกล่าวแล้ว
                     กรุณาตรวจสอบอีเมลของคุณและทำตามคำแนะนำ

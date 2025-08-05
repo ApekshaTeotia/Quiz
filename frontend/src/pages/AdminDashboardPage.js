@@ -79,7 +79,7 @@ const AdminDashboardPage = () => {
             <Row className="mb-4 align-items-center">
                 <Col>
                     <h2 className="mb-0">Admin Dashboard</h2>
-                    <p className="text-muted">ระบบจัดการสำหรับผู้ดูแล</p>
+                    <p className="text-muted">Administrator Management System</p>
                 </Col>
             </Row>
 

@@ -1,6 +1,6 @@
 # Signal School Quiz Generator 🧠📝
 
-*โรงเรียนทหารสื่อสาร กรมการทหารสื่อสาร | Signal School, Signal Department, Royal Thai Army*
+*Signal School, Signal Department, Royal Thai Army*
 
 ## Project Overview
 

@@ -24,7 +24,7 @@ const RegisterPage = () => {
     const [passwordStrength, setPasswordStrength] = useState({
         value: 0,
         variant: 'danger',
-        text: 'ไม่รัดกุม'
+        text: 'Not secure'
     });
     const [registerSuccess, setRegisterSuccess] = useState(false);
 
@@ -52,7 +52,7 @@ const RegisterPage = () => {
     // Check password strength
     const checkPasswordStrength = (password) => {
         let strength = 0;
-        let feedback = 'ไม่รัดกุม';
+        let feedback = 'Not secure';
         let variant = 'danger';
 
         if (password.length >= 8) strength += 1;
@@ -62,7 +62,7 @@ const RegisterPage = () => {
         if (password.match(/[^A-Za-z0-9]/)) strength += 1;
 
         if (strength === 0) {
-            feedback = 'ไม่รัดกุม';
+            feedback = 'Not secure';
             variant = 'danger';
         } else if (strength < 3) {
             feedback = 'อ่อนแอ';

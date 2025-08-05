@@ -1,5 +1,5 @@
 /**
- * ตั้งค่าตัวจัดการข้อผิดพลาดระดับสูงสุดของแอปพลิเคชัน
+ * Configure the top-level error handler for the application
  */
 export const setupGlobalErrorHandler = () => {
     // Handle uncaught exceptions

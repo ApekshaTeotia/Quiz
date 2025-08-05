@@ -10,7 +10,7 @@ export const ProtectedRoute = ({ requireRole = null }) => {
     const location = useLocation();
 
     if (loading) {
-        return <LoadingOverlay isLoading={true} message="กำลังตรวจสอบสิทธิ์..." />;
+        return <LoadingOverlay isLoading={true} message="Checking permissions..." />;
     }
 
     if (!isAuthenticated) {
@@ -31,7 +31,7 @@ export const PublicOnlyRoute = () => {
     const { isAuthenticated, loading } = useAuth();
 
     if (loading) {
-        return <LoadingOverlay isLoading={true} message="กำลังตรวจสอบสถานะ..." />;
+        return <LoadingOverlay isLoading={true} message="Checking status..." />;
     }
 
     if (isAuthenticated) {

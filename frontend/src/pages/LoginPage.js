@@ -86,8 +86,8 @@ const LoginPage = () => {
                             height="60"
                             className="mb-3"
                         />
-                        <h2>เข้าสู่ระบบ</h2>
-                        <p className="text-muted">สร้างข้อสอบด้วย AI - ง่ายและรวดเร็ว</p>
+                        <h2>Login</h2>
+                        <p className="text-muted">Create quizzes with AI - Easy and Fast</p>
                     </div>
 
                     <Card className="border-0 shadow-sm">
@@ -113,11 +113,11 @@ const LoginPage = () => {
                             <Form noValidate validated={validated} onSubmit={handleSubmit}>
                                 {/* Email field */}
                                 <Form.Group className="mb-3" controlId="email">
-                                    <Form.Label>อีเมล</Form.Label>
+                                    <Form.Label>Email</Form.Label>
                                     <Form.Control
                                         type="email"
                                         name="email"
-                                        placeholder="กรอกอีเมลของคุณ"
+                                        placeholder="Enter your email"
                                         value={formData.email}
                                         onChange={handleChange}
                                         onKeyDown={handleEmailKeyDown}
@@ -125,21 +125,21 @@ const LoginPage = () => {
                                         disabled={loading}
                                     />
                                     <Form.Control.Feedback type="invalid">
-                                        กรุณากรอกอีเมลที่ถูกต้อง
+                                        Please enter a valid email
                                     </Form.Control.Feedback>
                                 </Form.Group>
 
                                 {/* Password field */}
                                 <Form.Group className="mb-3" controlId="password">
                                     <div className="d-flex justify-content-between">
-                                        <Form.Label>รหัสผ่าน</Form.Label>
-                                        <Link to="/forgot-password" className="small text-decoration-none">ลืมรหัสผ่าน?</Link>
+                                        <Form.Label>Password</Form.Label>
+                                        <Link to="/forgot-password" className="small text-decoration-none">Forgot password?</Link>
                                     </div>
                                     <InputGroup>
                                         <Form.Control
                                             type={showPassword ? "text" : "password"}
                                             name="password"
-                                            placeholder="กรอกรหัสผ่านของคุณ"
+                                            placeholder="Enter your password"
                                             value={formData.password}
                                             onChange={handleChange}
                                             required
@@ -163,7 +163,7 @@ const LoginPage = () => {
                                             )}
                                         </Button>
                                         <Form.Control.Feedback type="invalid">
-                                            กรุณากรอกรหัสผ่าน
+                                            Please enter your password
                                         </Form.Control.Feedback>
                                     </InputGroup>
                                 </Form.Group>
@@ -186,17 +186,17 @@ const LoginPage = () => {
                                                     aria-hidden="true"
                                                     className="me-2"
                                                 />
-                                                กำลังเข้าสู่ระบบ...
+                                                Logging in...
                                             </>
                                         ) : (
-                                            'เข้าสู่ระบบ'
+                                            'Login'
                                         )}
                                     </Button>
                                 </div>
                             </Form>
 
                             <div className="mt-4 text-center">
-                                <p className="mb-0">ยังไม่มีบัญชี? <Link to="/register" className="text-decoration-none">สมัครใช้งาน</Link></p>
+                                <p className="mb-0">Don't have an account? <Link to="/register" className="text-decoration-none">Register</Link></p>
                             </div>
                         </Card.Body>
                     </Card>

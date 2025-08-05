@@ -17,7 +17,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
-                // ดึงสถิติแดชบอร์ดจาก API ใหม่
+                // Fetch new dashboard statistics from API
                 const statsResponse = await quizService.getDashboardStats();
 
                 // ดึงข้อสอบล่าสุดสำหรับกิจกรรมล่าสุด

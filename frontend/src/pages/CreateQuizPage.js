@@ -94,7 +94,7 @@ const CreateQuizPage = () => {
     ];
     
     if (!allowedTypes.includes(file.type)) {
-      setFileError('รองรับเฉพาะไฟล์ PDF, DOCX และ TXT เท่านั้น');
+      setFileError('Only PDF, DOCX and TXT files are supported');
       return;
     }
 
