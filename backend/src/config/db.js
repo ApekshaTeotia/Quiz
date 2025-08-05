@@ -23,9 +23,16 @@ class Database {
   /**
    * Initialize the database connection pool
    */
-  initialize() {
+  async initialize() {
     try {
       const dbConfig = configService.get('database');
+
+      logger.info('Initializing database connection with config:', {
+        host: dbConfig.host,
+        user: dbConfig.user,
+        database: dbConfig.name,
+        connectionLimit: dbConfig.connectionLimit
+      });
 
       // Create connection pool
       this.pool = mysql.createPool({
@@ -38,7 +45,10 @@ class Database {
         queueLimit: dbConfig.queueLimit,
         enableKeepAlive: true,
         keepAliveInitialDelay: 10000, // 10 seconds
-        timezone: '+00:00' // UTC
+        timezone: '+00:00', // UTC
+        multipleStatements: true, // Allow multiple SQL statements
+        charset: 'utf8mb4', // Support full UTF-8
+        namedPlaceholders: true // Enable named placeholders
       });
 
       logger.info('Database connection pool initialized');
@@ -46,8 +56,9 @@ class Database {
       // Setup connection monitoring
       this.setupConnectionMonitoring();
 
-      // Test connection
-      this.testConnection();
+      // Test connection and initialize schema
+      await this.testConnection();
+      await this.initializeSchema();
     } catch (error) {
       logger.error('Failed to initialize database connection pool:', error);
       this.isConnected = false;
@@ -105,31 +116,75 @@ class Database {
    */
   async testConnection(logSuccess = true) {
     try {
-      const connection = await this.pool.getConnection();
-
-      // Execute a simple query to verify connection
-      await connection.execute('SELECT 1 AS connection_test');
-
-      // Release the connection back to the pool
-      connection.release();
-
-      // Update connection status
-      if (!this.isConnected) {
-        this.isConnected = true;
-        this.connectionErrors = 0;
-        this.reconnectAttempts = 0;
-
-        if (logSuccess) {
-          logger.info('Database connection established successfully');
-        }
+      if (!this.pool) {
+        throw new Error('Database pool not initialized');
       }
 
-      return true;
+      const connection = await this.pool.getConnection();
+
+      try {
+        // Check if database exists
+        const [dbCheck] = await connection.execute(
+          `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?`,
+          [configService.get('database').name]
+        );
+
+        if (dbCheck.length === 0) {
+          // Database doesn't exist, create it
+          const dbName = configService.get('database').name;
+          await connection.execute(`CREATE DATABASE IF NOT EXISTS ${dbName} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`);
+          logger.info(`Created database: ${dbName}`);
+          
+          // Use the new database
+          await connection.execute(`USE ${dbName}`);
+        }
+
+        // Execute a simple query to verify connection
+        const [result] = await connection.execute('SELECT 1 AS connection_test');
+        
+        if (result[0].connection_test === 1) {
+          // Update connection status
+          if (!this.isConnected) {
+            this.isConnected = true;
+            this.connectionErrors = 0;
+            this.reconnectAttempts = 0;
+
+            if (logSuccess) {
+              logger.info('Database connection established successfully');
+            }
+          }
+          return true;
+        }
+      } finally {
+        // Always release the connection back to the pool
+        connection.release();
+      }
     } catch (error) {
       this.isConnected = false;
       this.connectionErrors++;
 
       logger.error(`Database connection test failed (Error #${this.connectionErrors}):`, error);
+      logger.error('Error details:', {
+        code: error.code,
+        errno: error.errno,
+        sqlState: error.sqlState,
+        sqlMessage: error.sqlMessage
+      });
+
+      // Handle specific MySQL errors
+      switch (error.code) {
+        case 'ER_ACCESS_DENIED_ERROR':
+          logger.error('Access denied. Please check database username and password.');
+          break;
+        case 'ECONNREFUSED':
+          logger.error('Connection refused. Please check if MySQL server is running.');
+          break;
+        case 'ER_BAD_DB_ERROR':
+          logger.error('Database does not exist.');
+          break;
+        default:
+          logger.error('Unknown database error:', error.message);
+      }
 
       throw error;
     }
@@ -215,6 +270,38 @@ class Database {
     } catch (error) {
       logger.error('Error getting database connection:', error);
       throw error;
+    }
+  }
+
+  /**
+   * Initialize database schema
+   */
+  async initializeSchema() {
+    const connection = await this.getConnection();
+    try {
+      logger.info('Initializing database schema...');
+      
+      // Read and execute schema SQL
+      const schemaPath = new URL('../database.sql', import.meta.url);
+      const schema = await fs.promises.readFile(schemaPath, 'utf8');
+      
+      // Split SQL into individual statements
+      const statements = schema
+        .split(';')
+        .map(s => s.trim())
+        .filter(s => s.length > 0);
+
+      // Execute each statement
+      for (const sql of statements) {
+        await connection.execute(sql + ';');
+      }
+      
+      logger.info('Database schema initialized successfully');
+    } catch (error) {
+      logger.error('Error initializing database schema:', error);
+      throw error;
+    } finally {
+      connection.release();
     }
   }
 }
